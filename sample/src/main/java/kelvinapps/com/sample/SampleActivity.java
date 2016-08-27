@@ -46,7 +46,8 @@ public class SampleActivity extends AppCompatActivity {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         // observe posts list under "posts" child.
-        RxFirebaseDatabase.observeValueEvent(reference.child("posts"), DataSnapshotMapper.of(new GenericTypeIndicator<List<BlogPost>>() {}))
+        RxFirebaseDatabase.observeValueEvent(reference.child("posts"), DataSnapshotMapper.of(new GenericTypeIndicator<List<BlogPost>>() {
+        }))
                 .flatMap(Observable::from)
                 .subscribe(blogPost -> {
                     postsTextView.setText(postsTextView.getText().toString() + blogPost.toString() + "\n");

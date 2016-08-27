@@ -60,6 +60,7 @@ public class RxFirebaseDatabaseTests {
         testChildEventRemoved = new RxFirebaseChildEvent<>(testData, RxFirebaseChildEvent.EventType.REMOVED);
         testChildEventMoved = new RxFirebaseChildEvent<>(testData, "root", RxFirebaseChildEvent.EventType.MOVED);
 
+        when(mockFirebaseDataSnapshot.exists()).thenReturn(true);
         when(mockFirebaseDataSnapshot.getValue(TestData.class)).thenReturn(testData);
         when(mockFirebaseDataSnapshot.getKey()).thenReturn("key");
         when(mockFirebaseDataSnapshot.getChildren()).thenReturn(Arrays.asList(mockFirebaseDataSnapshot));
@@ -102,7 +103,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveValuesList_Failed() throws InterruptedException {
+    public void testObserveSingleValueEvent_Failed() throws InterruptedException {
 
         TestSubscriber<List<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeSingleValueEvent(mockDatabase, TestData.class)
@@ -120,7 +121,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveValue() throws InterruptedException {
+    public void testObserveValueEvent() throws InterruptedException {
 
         TestSubscriber<TestData> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeValueEvent(mockDatabase, TestData.class)
@@ -139,7 +140,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveValues() throws InterruptedException {
+    public void testSingleValueEvent() throws InterruptedException {
 
         TestSubscriber<TestData> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeSingleValueEvent(mockDatabase, TestData.class)
@@ -158,7 +159,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveValuesList() throws InterruptedException {
+    public void testObserveValueEventList() throws InterruptedException {
 
         TestSubscriber<List<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeSingleValueEvent(mockDatabase, TestData.class)
@@ -213,7 +214,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveChildrenEvents_Added() throws InterruptedException {
+    public void testObserveChildEvent_Added() throws InterruptedException {
 
         TestSubscriber<RxFirebaseChildEvent<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeChildEvent(mockDatabase, TestData.class)
@@ -232,7 +233,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveChildrenEvents_Changed() throws InterruptedException {
+    public void testObserveChildEvent_Changed() throws InterruptedException {
 
         TestSubscriber<RxFirebaseChildEvent<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeChildEvent(mockDatabase, TestData.class)
@@ -251,7 +252,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveChildrenEvents_Removed() throws InterruptedException {
+    public void testObserveChildEvent_Removed() throws InterruptedException {
 
         TestSubscriber<RxFirebaseChildEvent<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeChildEvent(mockDatabase, TestData.class)
@@ -270,7 +271,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveChildrenEvents_Moved() throws InterruptedException {
+    public void testObserveChildEvent_Moved() throws InterruptedException {
 
         TestSubscriber<RxFirebaseChildEvent<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeChildEvent(mockDatabase, TestData.class)
@@ -289,7 +290,7 @@ public class RxFirebaseDatabaseTests {
     }
 
     @Test
-    public void testObserveChildrenEvents_Cancelled() throws InterruptedException {
+    public void testObserveChildEvent_Cancelled() throws InterruptedException {
 
         TestSubscriber<RxFirebaseChildEvent<TestData>> testSubscriber = new TestSubscriber<>();
         RxFirebaseDatabase.observeChildEvent(mockDatabase, TestData.class)
