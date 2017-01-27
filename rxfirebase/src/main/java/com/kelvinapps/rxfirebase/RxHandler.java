@@ -7,21 +7,21 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import rx.Subscriber;
+import rx.Emitter;
 
 /**
  * Created by Nick Moskalenko on 24/05/2016.
  */
 public class RxHandler<T> implements OnSuccessListener<T>, OnFailureListener, OnCompleteListener<T> {
 
-    private final Subscriber<? super T> subscriber;
+    private final Emitter<? super T> emitter;
 
-    private RxHandler(Subscriber<? super T> observer) {
-        this.subscriber = observer;
+    private RxHandler(Emitter<? super T> emitter) {
+        this.emitter = emitter;
     }
 
-    public static <T> void assignOnTask(Subscriber<? super T> observer, Task<T> task) {
-        RxHandler handler = new RxHandler(observer);
+    public static <T> void assignOnTask(Emitter<? super T> emitter, Task<T> task) {
+        RxHandler handler = new RxHandler(emitter);
         task.addOnSuccessListener(handler);
         task.addOnFailureListener(handler);
         try {
@@ -33,22 +33,16 @@ public class RxHandler<T> implements OnSuccessListener<T>, OnFailureListener, On
 
     @Override
     public void onSuccess(T res) {
-        if (!subscriber.isUnsubscribed()) {
-            subscriber.onNext(res);
-        }
+        emitter.onNext(res);
     }
 
     @Override
     public void onComplete(@NonNull Task<T> task) {
-        if (!subscriber.isUnsubscribed()) {
-            subscriber.onCompleted();
-        }
+        emitter.onCompleted();
     }
 
     @Override
     public void onFailure(@NonNull Exception e) {
-        if (!subscriber.isUnsubscribed()) {
-            subscriber.onError(e);
-        }
+        emitter.onError(e);
     }
 }

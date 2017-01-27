@@ -12,8 +12,9 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.InputStream;
 
+import rx.Emitter;
 import rx.Observable;
-import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * Created by Nick Moskalenko on 24/05/2016.
@@ -23,122 +24,122 @@ public class RxFirebaseStorage {
     @NonNull
     public static Observable<byte[]> getBytes(@NonNull final StorageReference storageRef,
                                               final long maxDownloadSizeBytes) {
-        return Observable.create(new Observable.OnSubscribe<byte[]>() {
+        return Observable.fromEmitter(new Action1<Emitter<byte[]>>() {
             @Override
-            public void call(final Subscriber<? super byte[]> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getBytes(maxDownloadSizeBytes));
+            public void call(Emitter<byte[]> emitter) {
+                RxHandler.assignOnTask(emitter, storageRef.getBytes(maxDownloadSizeBytes));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<Uri> getDownloadUrl(@NonNull final StorageReference storageRef) {
-        return Observable.create(new Observable.OnSubscribe<Uri>() {
+        return Observable.fromEmitter(new Action1<Emitter<Uri>>() {
             @Override
-            public void call(final Subscriber<? super Uri> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getDownloadUrl());
+            public void call(Emitter<Uri> uriEmitter) {
+                RxHandler.assignOnTask(uriEmitter, storageRef.getDownloadUrl());
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<FileDownloadTask.TaskSnapshot> getFile(@NonNull final StorageReference storageRef,
                                                                     @NonNull final File destinationFile) {
-        return Observable.create(new Observable.OnSubscribe<FileDownloadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<FileDownloadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super FileDownloadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getFile(destinationFile));
+            public void call(Emitter<FileDownloadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.getFile(destinationFile));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<FileDownloadTask.TaskSnapshot> getFile(@NonNull final StorageReference storageRef,
                                                                     @NonNull final Uri destinationUri) {
-        return Observable.create(new Observable.OnSubscribe<FileDownloadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<FileDownloadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super FileDownloadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getFile(destinationUri));
+            public void call(Emitter<FileDownloadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.getFile(destinationUri));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<StorageMetadata> getMetadata(@NonNull final StorageReference storageRef) {
-        return Observable.create(new Observable.OnSubscribe<StorageMetadata>() {
+        return Observable.fromEmitter(new Action1<Emitter<StorageMetadata>>() {
             @Override
-            public void call(final Subscriber<? super StorageMetadata> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getMetadata());
+            public void call(Emitter<StorageMetadata> storageMetadataEmitter) {
+                RxHandler.assignOnTask(storageMetadataEmitter, storageRef.getMetadata());
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<StreamDownloadTask.TaskSnapshot> getStream(@NonNull final StorageReference storageRef) {
-        return Observable.create(new Observable.OnSubscribe<StreamDownloadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<StreamDownloadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super StreamDownloadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getStream());
+            public void call(Emitter<StreamDownloadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.getStream());
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<StreamDownloadTask.TaskSnapshot> getStream(@NonNull final StorageReference storageRef,
                                                                         @NonNull final StreamDownloadTask.StreamProcessor processor) {
-        return Observable.create(new Observable.OnSubscribe<StreamDownloadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<StreamDownloadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super StreamDownloadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.getStream(processor));
+            public void call(Emitter<StreamDownloadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.getStream(processor));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
 
     @NonNull
     public static Observable<UploadTask.TaskSnapshot> putBytes(@NonNull final StorageReference storageRef,
                                                                @NonNull final byte[] bytes) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putBytes(bytes));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putBytes(bytes));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<UploadTask.TaskSnapshot> putBytes(@NonNull final StorageReference storageRef,
                                                                @NonNull final byte[] bytes,
                                                                @NonNull final StorageMetadata metadata) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putBytes(bytes, metadata));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putBytes(bytes, metadata));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<UploadTask.TaskSnapshot> putFile(@NonNull final StorageReference storageRef,
                                                               @NonNull final Uri uri) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putFile(uri));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putFile(uri));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<UploadTask.TaskSnapshot> putFile(@NonNull final StorageReference storageRef,
                                                               @NonNull final Uri uri,
                                                               @NonNull final StorageMetadata metadata) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putFile(uri, metadata));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putFile(uri, metadata));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
@@ -146,56 +147,56 @@ public class RxFirebaseStorage {
                                                               @NonNull final Uri uri,
                                                               @NonNull final StorageMetadata metadata,
                                                               @NonNull final Uri existingUploadUri) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putFile(uri, metadata, existingUploadUri));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putFile(uri, metadata, existingUploadUri));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<UploadTask.TaskSnapshot> putStream(@NonNull final StorageReference storageRef,
                                                                 @NonNull final InputStream stream,
                                                                 @NonNull final StorageMetadata metadata) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putStream(stream, metadata));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putStream(stream, metadata));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<UploadTask.TaskSnapshot> putStream(@NonNull final StorageReference storageRef,
                                                                 @NonNull final InputStream stream) {
-        return Observable.create(new Observable.OnSubscribe<UploadTask.TaskSnapshot>() {
+        return Observable.fromEmitter(new Action1<Emitter<UploadTask.TaskSnapshot>>() {
             @Override
-            public void call(final Subscriber<? super UploadTask.TaskSnapshot> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.putStream(stream));
+            public void call(Emitter<UploadTask.TaskSnapshot> taskSnapshotEmitter) {
+                RxHandler.assignOnTask(taskSnapshotEmitter, storageRef.putStream(stream));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<StorageMetadata> updateMetadata(@NonNull final StorageReference storageRef,
                                                              @NonNull final StorageMetadata metadata) {
-        return Observable.create(new Observable.OnSubscribe<StorageMetadata>() {
+        return Observable.fromEmitter(new Action1<Emitter<StorageMetadata>>() {
             @Override
-            public void call(final Subscriber<? super StorageMetadata> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.updateMetadata(metadata));
+            public void call(Emitter<StorageMetadata> storageMetadataEmitter) {
+                RxHandler.assignOnTask(storageMetadataEmitter, storageRef.updateMetadata(metadata));
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
     @NonNull
     public static Observable<Void> delete(@NonNull final StorageReference storageRef) {
-        return Observable.create(new Observable.OnSubscribe<Void>() {
+        return Observable.fromEmitter(new Action1<Emitter<Void>>() {
             @Override
-            public void call(final Subscriber<? super Void> subscriber) {
-                RxHandler.assignOnTask(subscriber, storageRef.delete());
+            public void call(Emitter<Void> voidEmitter) {
+                RxHandler.assignOnTask(voidEmitter, storageRef.delete());
             }
-        });
+        }, Emitter.BackpressureMode.LATEST);
     }
 
 
